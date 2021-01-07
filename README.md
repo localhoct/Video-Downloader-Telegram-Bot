@@ -8,7 +8,7 @@ Use this command :
     pip install -r requirements.txt
 
 # Edit the code
-at line **8**,**9** and **10** paste your  **api id** and **api hash** `( get from https://my.telegram.org )` and **bot token**`( get it from t.me/botfather )`
+at line **8**,**9** and **10** paste your  **api id** and **api hash** ( get from [Here](https://my.telegram.org) and **bot token** ( get it from [BotFather](t.me/botfather) )
 
 # Run The Bot
 

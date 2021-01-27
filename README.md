@@ -1,4 +1,4 @@
-# Video-Downloader-Telegram-Bot
+# Video Downloader Telegram Bot (Youtube Downloader)
 This bot use youtube dl to download video from url which you cant download from for example Youtube Videos
                                                                                                                                 this bot based on Pyrogram library and YoutubeDL
 

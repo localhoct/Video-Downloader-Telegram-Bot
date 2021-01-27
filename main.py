@@ -12,10 +12,9 @@ app = Client("Downlaoder", api_id, api_hash, bot_token=token) # You Can Change T
 
 
 def downloada(url, quality):
-    # print(12345)
     if quality == "1":
         ydl_opts_start = {
-            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best', # need ffmpeg if you don't have it Change it to "best" or install it :)
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best', # need ffmpeg if you don't have ffmpeg, Change it to "best" or install ffmpeg :)
             'outtmpl': f'localhoct/%(title)s.%(ext)s',
             'no_warnings': True,
             'ignoreerrors': True,
@@ -48,14 +47,13 @@ def downloada(url, quality):
 
 # here you can Edit Start message
 @app.on_message(filters.command('start', '/'))
-def start(c, m):
+def start(c, m): # c Mean Client | m Mean Message
     m.reply_text('Hi Welcome To @iLoaderBot \n Just Send Video Url To me and i\'ll try to upload the video and send it to you') #Edit it and add your Bot ID :)
 
 
 @app.on_message(filters.regex(
     r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"))
-def webpage(c, m):
-    url1 = m.text
+def webpage(c, m): # c Mean Client | m Mean Message
     url1 = m.text
     if validators.url(url1):
         sample_url = "https://da.gd/s?url={}".format(url1)
@@ -63,7 +61,7 @@ def webpage(c, m):
         chat_id = m.chat.id
         keys = c.send_message(
             chat_id,
-            f"Okay!!🙄\n {url1} is Video Url😊 \n\nPlease Select Quality :\n 💡The HD Key is Download the Best Quality is available so I recommend This Key😁 ",
+            f"Okay!!🙄\n {url1} is Video Url😊 \n\nPlease Select Quality :\n💡The HD Button is Download the Best Quality is available so I recommend This Button😁 ",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
@@ -88,16 +86,37 @@ def webpage(c, m):
 
 
 @app.on_callback_query()
-async def download(c, q):
-    chat_id = q.from_user.id
+def download(c, q): # c Mean Client | q Mean Query
+    global check_current
+    check_current = 0
+    def progress(current, total): #Thanks to my dear friend Hassan Hoot for Progress Bar :)
+        global check_current
+        if ((current//1024//1024) % 50 )== 0 :
+            if check_current != (current//1024//1024):
+                check_current = (current//1024//1024)
+                upmsg.edit(f"{current//1024//1024}MB of {total//1024//1024}MB Uploaded 😁")
+        elif (current//1024//1024) == (total//1024//1024):
+            upmsg.delete()
+    
+    chat_id = q.message.chat.id
     data = q.data
     url, quaitly = data.split(" and ")
-    dlmsg = await c.send_message(chat_id, 'Hmm!😋 Downloading...')
+    dlmsg = c.send_message(chat_id, 'Hmm!😋 Downloading...')
     path = downloada(url, quaitly)
-    upmsg = await c.send_message(chat_id, 'Yeah😁 Uploading...')
-    await dlmsg.delete()
-    vid = await c.send_video(chat_id, path, caption='Downloaded by @iLoaderBot')
-    await upmsg.delete()
-
+    upmsg = c.send_message(chat_id, 'Yeah😁 Uploading...')
+    dlmsg.delete()
+    thumb = path.replace('.mp4',".jpg",-1)
+    if  os.path.isfile(thumb):
+        thumb = open(thumb,"rb")
+        path = open(path, 'rb')
+        c.send_photo(chat_id,thumb,caption='Thumbnail of the video Downloaded by @iLoaderBot') #Edit it and add your Bot ID :)
+        c.send_video(chat_id, path, caption='Downloaded by @iLoaderBot',
+                    file_name="iLoader", supports_streaming=True, progress=progress) #Edit it and add your Bot ID :)
+        upmsg.delete()
+    else:
+        path = open(path, 'rb')
+        c.send_video(chat_id, path, caption='Downloaded by @iLoaderBot',
+                    file_name="iLoader", supports_streaming=True, progress=progress)
+        upmsg.delete()
 
 app.run()

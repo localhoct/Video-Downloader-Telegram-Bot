@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import requests
+import requests, os, validators
 import youtube_dl
 from pyrogram import Client, filters
 from pyrogram.types import  InlineKeyboardMarkup, InlineKeyboardButton
 
-api_id = 123456789
-api_hash = " Your Api Hash Here "
-app = Client("Downlaoder", api_id, api_hash, bot_token=' Your Bot Token here ')
+api_id = 123456789 #int of api id get from my.telegram.org
+api_hash = " Your Api Hash Here " #str of api hash get from my.telegram.org
+token = ' Your Bot Token here ' #str of token get from BotFather
+app = Client("Downlaoder", api_id, api_hash, bot_token=token) # You Can Change The Session Name by Replace "Downlaoder" to your session name
 
 
 def downloada(url, quality):

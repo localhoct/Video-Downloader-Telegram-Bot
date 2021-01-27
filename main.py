@@ -15,7 +15,7 @@ def downloada(url, quality):
     # print(12345)
     if quality == "1":
         ydl_opts_start = {
-            'format': 'best',
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best', # need ffmpeg if you don't have it Change it to "best" or install it :)
             'outtmpl': f'localhoct/%(title)s.%(ext)s',
             'no_warnings': True,
             'ignoreerrors': True,

@@ -46,43 +46,45 @@ def downloada(url, quality):
             ydl.download([url])
         return f'{title}'
 
-
+# here you can Edit Start message
 @app.on_message(filters.command('start', '/'))
-async def start(c, m):
-    await m.reply_text('Hi Welcome To @iLoaderBot \n Just Send Video Url To me and i\'ll try to upload the video and send it to you')
+def start(c, m):
+    m.reply_text('Hi Welcome To @iLoaderBot \n Just Send Video Url To me and i\'ll try to upload the video and send it to you') #Edit it and add your Bot ID :)
 
 
 @app.on_message(filters.regex(
     r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"))
-async def webpage(c, m):
+def webpage(c, m):
     url1 = m.text
-    sample_url = "https://da.gd/s?url={}".format(url1)
-    url = requests.get(sample_url).text
-    chat_id = m.chat.id
+    url1 = m.text
+    if validators.url(url1):
+        sample_url = "https://da.gd/s?url={}".format(url1)
+        url = requests.get(sample_url).text
+        chat_id = m.chat.id
+        keys = c.send_message(
+            chat_id,
+            f"Okay!!🙄\n {url1} is Video Url😊 \n\nPlease Select Quality :\n 💡The HD Key is Download the Best Quality is available so I recommend This Key😁 ",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            "HD (Recommended)",
+                            callback_data="%s and 1" % url
+                        ),
 
-    keys = await c.send_message(
-        chat_id,  
-        "Okay!!🙄\n %s is Video Url😊 \n\nPlease Select Quality :\n 💡The HD Key is Download the Best Quality is available so I recommend This Key😁 " % url1,
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [ 
-                    InlineKeyboardButton(  
-                        "HD (Recommended)",
-                        callback_data="%s and 1" % url
-                    ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            "SD (480p)",
+                            callback_data="%s and 2" % url
+                        ),
 
-                ],
-                [  
-                    InlineKeyboardButton(  
-                        "SD (480p)",
-                        callback_data="%s and 2" % url
-                    ),
-
+                    ]
                 ]
-            ]
+            ), disable_web_page_preview=True
         )
-        , disable_web_page_preview=True
-    )
+    else:
+        c.send_message(m.chat.id,"Send The Valid Url Please")
 
 
 @app.on_callback_query()

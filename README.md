@@ -19,6 +19,6 @@ other Edit lines are Commented in The **main.py** Source :)
 After Install requirements and edit the code Run The bot Use this command or use your editor or etc,
 
     python3 main.py
-> Thanks to my Dear Friend Hassan Hoot For The Progress Bar
+> Thanks to my Dear Friend [Hassan Hoot](https://github.com/hassanhoot) For The Progress Bar
 
 **I hope Enjoy The Bot :)**

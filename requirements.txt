@@ -3,3 +3,4 @@ tgcrypto
 requests
 youtube-dl
 validators
+ffmpeg
